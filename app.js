@@ -67,9 +67,9 @@ const galleryItems = [
 
 
 
-const makeImgCard = item=> {
- const { preview, original, description }= item;
-  return `
+const makeImgCard = item => {
+    const { preview, original, description } = item;
+    return `
  <li class="gallery__item">
   <a
     class="gallery__link"
@@ -84,11 +84,45 @@ const makeImgCard = item=> {
   </a>
 </li>
   `
-}
-console.log(makeImgCard(galleryItems[0]));
+};
 
 const makeImgGallery =  galleryItems.map(makeImgCard).join('');
 console.log(makeImgGallery);
 
+  const lightboxEl = document.querySelector('.js-lightbox');
 const ulEl = document.querySelector('.js-gallery');
+const imgEl = document.querySelector('.lightbox__image');
+const closeBtnEl = document.querySelector(
+  'button[data-action="close-lightbox"]'
+);
+
 ulEl.insertAdjacentHTML('afterbegin', makeImgGallery);
+
+
+ulEl.addEventListener('click', onImgClick);
+
+function onImgClick(event) {
+    if (event.target.classList.contains('gallery__image')) {
+        event.preventDefault();
+        lightboxEl.classList.add('is-open');
+        imgEl.src = event.target.dataset.source;
+    }
+};
+
+closeBtnEl.addEventListener('click', onBtnClick);
+lightboxEl.addEventListener('click', onModalClick);
+function onBtnClick(event) {
+     lightboxEl.classList.remove('is-open');
+  imgEl.src = '';
+};
+
+function onModalClick(event) {
+    if (event.target.classList.contains('lightbox__overlay')) {
+         lightboxEl.classList.remove('is-open');
+  imgEl.src = '';  
+    }
+};
+   
+
+
+
